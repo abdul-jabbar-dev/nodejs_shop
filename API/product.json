@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Salt",
+        "description": "Salt is the most essential item in human diet. ACI Pure Salt is 100% pure, free flow, vacuum evaporated . ",
+        "imageURLs": "https://chaldn.com/_mpimage/aci-pure-salt-1-kg?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D47100&q=best&v=1&m=400&webp=1"
+    },
+    {
+        "name": "Rice",
+        "description": "Rice is the most essential item in human diet. ACI Pure Salt is 100% pure, free flow, vacuum evaporated . ",
+        "imageURLs": "https://chaldn.com/_mpimage/aci-pure-salt-1-kg?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D47100&q=best&v=1&m=400&webp=1"
+    },
+    {
+        "name": "Flour",
+        "description": "Flour is the most essential item in human diet. ACI Pure Salt is 100% pure, free flow, vacuum evaporated . ",
+        "imageURLs": "https://chaldn.com/_mpimage/aci-pure-salt-1-kg?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D47100&q=best&v=1&m=400&webp=1"
+    },
+    {
+        "name": "Masala",
+        "description": "Masala mix helps you prepare rich and aromatic Beef Curry for an appetizing and flavorful dish . ",
+        "imageURLs": "https://chaldn.com/_mpimage/radhuni-chilli-morich-powder-200-gm?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D110060&q=best&v=1&m=400&webp=1"
+    },
+    {
+        "productId": "633f17a65a2ebcb4ecd3b97c",
+        "name": "Radhuni Beef Masala",
+        "description": "Radhuni Beef Masala mix helps you prepare rich and aromatic Beef Curry for an appetizing and flavorful dish . ",
+        "unit": "pack",
+        "price": 50,
+        "quantity": 86,
+        "status": "active",
+        "category": {
+            "name": "Masala",
+            "id": "633eeddcde54a0fdb7677dbd"
+        },
+        "brand": {
+            "name": "Radhuni",
+            "id": "633eeaf2de54a0fdb7677dae"
+        },
+        "store": {
+            "name": "radhuni",
+            "id": ""
+        },
+        "suppliedBy": {
+            "name": "nur mohamad",
+            "id": "6341dab92457476baa79c6b0"
+        }
+    }
+]
