@@ -8,14 +8,14 @@ const usersSchema = new mongooes.Schema({
         trim: true,
         required: true,
         lowercase: true,
-        unique: true
+        unique: [true, 'This user already exist']
     },
     password: {
         type: String,
         required: true,
         validate: {
             validator: (value) => {
-                validator.isStrongPassword(value, {
+                return validator.isStrongPassword(value, {
                     minLength: 6,
                     minNumbers: 1
                 })
@@ -43,7 +43,7 @@ const usersSchema = new mongooes.Schema({
         enum: ['buyer', 'seller', 'manager', 'admin'],
         default: 'buyer'
     },
-    statue: {
+    status: {
         type: String,
         enum: ['active', 'in-active', 'blocked'],
         default: 'active'
@@ -57,10 +57,6 @@ const usersSchema = new mongooes.Schema({
     timestamps: true
 })
 
-// usersSchema.method.matchPassword = (CP) => {
-    
-// }
-
 
 usersSchema.pre('save', function (next) {
     const pass = this.password
@@ -68,5 +64,6 @@ usersSchema.pre('save', function (next) {
     next()
 
 })
+
 const userDb = mongooes.model('users', usersSchema)
 module.exports = userDb
