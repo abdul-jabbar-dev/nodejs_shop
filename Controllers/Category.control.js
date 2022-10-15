@@ -19,7 +19,6 @@ module.exports.getACategory = async (req, res) => {
 
 module.exports.createACategory = async (req, res) => {
     try {
-        console.log(req.body)
         const result = await CategoryDB.create(req.body)
         res.send(result)
     } catch (error) {

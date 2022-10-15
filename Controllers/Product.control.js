@@ -31,7 +31,6 @@ module.exports.createAProduct = async (req, res) => {
 }
 module.exports.createProductImage = async (req, res) => {
     try {
-        console.log(req.file)
     } catch (error) {
         res.send(error.message)
     }

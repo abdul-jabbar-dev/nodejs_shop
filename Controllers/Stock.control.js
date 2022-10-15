@@ -48,7 +48,6 @@ module.exports.getStoreStock = async (req, res) => {
 module.exports.createAStock = async (req, res) => {
     try {
         const result = await StockDb.create(req.body)
-        console.log(result)
         res.send(result)
     } catch (error) {
         res.send(error)

@@ -1,13 +1,17 @@
 const { default: mongoose } = require("mongoose")
 const userDb = require("../Schemas/User.schema")
 const bcrypt = require('bcrypt')
-const { generateToken } = require("../Utils/token")
+const generateToken = require('../Utils/token')
+const { sendMailWithGmail } = require("../Utils/mail")
 module.exports.getAllUsers = async (req, res) => {
     try {
         const result = await userDb.find({})
         res.send(result)
     } catch (error) {
-        res.send(error)
+        res.json({
+            status: "fail",
+            error
+        })
     }
 }
 module.exports.getAUser = async (req, res) => {
@@ -58,8 +62,11 @@ module.exports.signin = async (req, res) => {
         }
         //generate token
         const token = generateToken(existUser)
+
         existUser.confirmPassword = undefined
         existUser.password = undefined
+
+
         res.send({
             status: "success",
             deta: {
@@ -68,33 +75,68 @@ module.exports.signin = async (req, res) => {
             }
         })
     } catch (error) {
-        res.send(error)
+        res.json({
+            error: "fail",
+            massage: error
+        })
     }
 }
 module.exports.signUp = async (req, res) => {
     try {
         const data = req.body
         if (!data.email || !data.password) {
-            res.json({
+            returnres.json({
                 error: "fail",
                 massage: "email and password are required"
             })
         }
         if (data.password !== data.confirmPassword) {
-            res.json({
+            return res.json({
                 error: "fail",
                 massage: "Password didn't match"
             })
         }
         if (!data.role) {
-            res.json({
+            return res.json({
                 error: "fail",
                 massage: "Roll is missing"
             })
         }
         const result = await userDb.create(req.body)
-        res.send(result)
+        console.log(result)
+        if (result._id) {
+            const mailData = {
+                to: [result.email],
+                subject: "Verify your Account",
+                text: "Thank you"
+            }
+            const sendMail = await sendMailWithGmail(mailData)
+            res.send(sendMail)
+        }
     } catch (error) {
-        res.send(error)
+        if (error?.kePattern?.email != 0) {
+            return res.json({
+                status: 'fail',
+                error: "This user already created try to login"
+            })
+        } else {
+            return res.json({
+                status: 'fail',
+                error: error
+            })
+        }
+    }
+}
+module.exports.getMe = async (req, res) => {
+    try {
+
+        const decodedToken = req.user
+        const userInfo = await userDb.findOne({ email: decodedToken.email }).select({ password: 0, confirmPassword: 0 })
+        res.send(userInfo)
+    } catch (error) {
+        res.send({
+            status: "fail",
+            error
+        })
     }
 }

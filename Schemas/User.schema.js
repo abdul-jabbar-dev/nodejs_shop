@@ -14,12 +14,7 @@ const usersSchema = new mongooes.Schema({
         type: String,
         required: true,
         validate: {
-            validator: (value) => {
-                return validator.isStrongPassword(value, {
-                    minLength: 6,
-                    minNumbers: 1
-                })
-            },
+            validator: (value) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d#$@!%&*?]{6,30}$/.test(value),
             message: "Password {VALUE} is not strong"
         }
     },
