@@ -24,7 +24,8 @@ module.exports.sendMailWithGmail = async ( data)=>{
         from:process.env.SENDER_MAIL,
         to:data.to,
         subject:data.subject,
-        text:data.text
+        // text:data.text
+        html:data.html
     }
     let info = await transport.sendMail(mailData)
     return info

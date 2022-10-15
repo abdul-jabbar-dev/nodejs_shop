@@ -85,7 +85,7 @@ module.exports.signUp = async (req, res) => {
     try {
         const data = req.body
         if (!data.email || !data.password) {
-            returnres.json({
+            return res.json({
                 error: "fail",
                 massage: "email and password are required"
             })
@@ -102,13 +102,16 @@ module.exports.signUp = async (req, res) => {
                 massage: "Roll is missing"
             })
         }
+
         const result = await userDb.create(req.body)
-        console.log(result)
+
+        const getConfirmationToken = await result.confirmationAccount()
+        await result.save({ validateBeforeSave: false })
         if (result._id) {
             const mailData = {
                 to: [result.email],
                 subject: "Verify your Account",
-                text: "Thank you"
+                html: `Thank you for create account. For verify your account  <a target="_blank" href="${req.protocol}://${req.get('host')}${req.originalUrl}/confirmation/${getConfirmationToken}">Active account<a/>`
             }
             const sendMail = await sendMailWithGmail(mailData)
             res.send(sendMail)
@@ -137,6 +140,47 @@ module.exports.getMe = async (req, res) => {
         res.send({
             status: "fail",
             error
+        })
+    }
+}
+module.exports.accountConfirmation = async (req, res) => {
+    try {
+        const { token } = req.params
+        if (!token) {
+            return res.json({
+                status: 'fail',
+                error: "invalid token (no token found)"
+            })
+        }
+        const storedToken = await userDb.findOne({ confirmationToken: token })
+
+        if (!storedToken) {
+            return res.json({
+                status: 'fail',
+                error: "invalid token (token didn't match)"
+            })
+        }
+
+        if ((new Date(storedToken.confirmationTokenExp) < new Date())) {
+            return res.json({
+                status: 'fail',
+                error: "expire token"
+            })
+        }
+
+        storedToken.confirmationTokenExp = undefined
+        storedToken.confirmationToken = undefined
+        storedToken.status = 'active'
+        await storedToken.save({ validateBeforeSave: false })
+
+        res.send({
+            status: 'success',
+            message: 'account activated'
+        })
+    } catch (error) {
+        return res.json({
+            status: 'fail',
+            error: error
         })
     }
 }

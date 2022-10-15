@@ -1,6 +1,7 @@
 const mongooes = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 const usersSchema = new mongooes.Schema({
     email: {
         type: String,
@@ -41,8 +42,10 @@ const usersSchema = new mongooes.Schema({
     status: {
         type: String,
         enum: ['active', 'in-active', 'blocked'],
-        default: 'active'
+        default: 'in-active'
     },
+    confirmationToken: String,
+    confirmationTokenExp: Date,
     createdAt: Date,
     passwordChangedAt: Date,
     passwordResetToken: String,
@@ -59,6 +62,15 @@ usersSchema.pre('save', function (next) {
     next()
 
 })
+usersSchema.methods.confirmationAccount = async function () {
+    const token = crypto.randomBytes(32).toString('hex')
+    const expDate = new Date();
+    expDate.setDate(expDate.getDate() + 1)
 
+    this.confirmationToken = token
+    this.confirmationTokenExp = expDate 
+    
+    return token;
+}
 const userDb = mongooes.model('users', usersSchema)
 module.exports = userDb
